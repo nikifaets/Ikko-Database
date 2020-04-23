@@ -1,0 +1,17 @@
+#include "RecordInt.h"
+#include <string>
+void RecordInt::parse(std::string value){
+
+    int multiplier = 1;
+
+    if(value[0] == '-' || value[0] == '+'){
+
+        if (value[0] == '-'){}
+    }
+    this->value = stoi(value);
+}
+
+long long RecordInt::get_value(){
+
+    return this->value;
+}
