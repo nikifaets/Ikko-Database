@@ -1,5 +1,13 @@
 #include "RecordInt.h"
 #include <string>
+
+RecordInt::RecordInt(){}
+
+RecordInt::RecordInt(std::string val){
+
+    parse(val);
+
+}
 void RecordInt::parse(std::string value){
 
     int multiplier = 1;

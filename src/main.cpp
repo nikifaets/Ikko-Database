@@ -3,21 +3,27 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include "Record/Record.h"
 #include "Record/RecordInt/RecordInt.h"
 #include "Record/RecordDouble/RecordDouble.h"
+#include "Table/Row/Row.h"
 
 using namespace std;
 
 int main(){
 
+    Row row;
+    row.add_record("123");
+    row.add_record("123");
+
+    vector <Record*> recs = row.get_records();
+
+    for(int i=0; i<recs.size(); i++){
+
+        Record* rec = recs[i];
+        cout << dynamic_cast<RecordInt*>(rec)->get_value() << endl;
+    }
+
     
-    RecordInt r_int;
-    r_int.parse("123");
-
-    RecordDouble r_double;
-    r_double.parse("234.324");
-
-    cout << r_int.get_value() << endl;
-    cout << r_double.get_value() << endl;
 }
 

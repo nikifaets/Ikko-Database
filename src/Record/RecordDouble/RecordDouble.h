@@ -1,12 +1,14 @@
 #include "../Record.h"
 
-class RecordDouble : private Record{
+class RecordDouble : public Record{
 
-    const std::string name = "Double";
+    const Type rec_type = Double;
     double value;
 
     public:
 
+    RecordDouble(std::string val);
+    RecordDouble();
     void parse(std::string value);
     double get_value();
 };

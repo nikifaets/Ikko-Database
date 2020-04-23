@@ -1,5 +1,12 @@
 #include "RecordDouble.h"
 
+
+RecordDouble::RecordDouble(){}
+RecordDouble::RecordDouble(std::string val){
+
+    parse(val);
+}
+
 void RecordDouble::parse(std::string value){
 
     this->value = stod(value);
