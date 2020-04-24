@@ -3,7 +3,7 @@
 class RecordDouble : public Record{
 
     const Type rec_type = Double;
-    double value;
+    double value = 0;
 
     public:
 
@@ -11,4 +11,5 @@ class RecordDouble : public Record{
     RecordDouble();
     void parse(std::string value);
     double get_value();
+    std::string to_string();
 };

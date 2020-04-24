@@ -16,3 +16,8 @@ double RecordDouble::get_value(){
 
     return this->value;
 }
+
+std::string RecordDouble::to_string(){
+
+    return std::to_string(value);
+}

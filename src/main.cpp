@@ -7,23 +7,21 @@
 #include "Record/RecordInt/RecordInt.h"
 #include "Record/RecordDouble/RecordDouble.h"
 #include "Table/Row/Row.h"
+#include "Table/Table.h"
 
 using namespace std;
 
 int main(){
 
-    Row row;
-    row.add_record("123");
-    row.add_record("123");
-
-    vector <Record*> recs = row.get_records();
-
-    for(int i=0; i<recs.size(); i++){
-
-        Record* rec = recs[i];
-        cout << dynamic_cast<RecordInt*>(rec)->get_value() << endl;
-    }
-
     
+
+
+    Table table;
+    table.read_table("../test");
+    vector<Row> rows = table.get_rows();
+    cout << rows.size() << endl;
+    cout << rows[0].get_records().size() << endl;
+
+    table.save_table("../test_o");
 }
 

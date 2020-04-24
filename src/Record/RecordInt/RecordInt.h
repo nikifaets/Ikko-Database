@@ -4,7 +4,7 @@
 
 class RecordInt : public Record{
 
-    long long value;
+    long long value = 0;
     const Type rec_type = Int;
 
     public:
@@ -13,6 +13,7 @@ class RecordInt : public Record{
     RecordInt();
     void parse(std::string value);
     long long get_value();
+    std::string to_string();
 
 
 };

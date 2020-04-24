@@ -1,15 +1,16 @@
 #include "Caster.h"
 #include "../Record/RecordInt/RecordInt.h"
 #include "../Record/RecordDouble/RecordDouble.h"
+#include "../Table/Parser/Parser.h"
 #include <iostream>
 
 Record* Caster::string_to_rec(std::string val){
 
     Record* rec;
 
-    if(is_number(val)){
+    if(Parser::is_number(val)){
 
-        if(is_double(val)){
+        if(Parser::is_double(val)){
 
             rec = new RecordDouble(val);
 
@@ -39,13 +40,3 @@ Record* Caster::type_to_rec(Type type){
     }
 }
 
-bool Caster::is_number(std::string val){
-
-    return val[0] >= '0' && val[0] <= '9';
-
-}
-
-bool Caster::is_double(std::string val){
-
-    return val.find(".") != std::string::npos;
-}

@@ -23,3 +23,8 @@ long long RecordInt::get_value(){
 
     return this->value;
 }
+
+std::string RecordInt::to_string(){
+
+    return std::to_string(value);
+}
