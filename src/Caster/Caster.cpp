@@ -1,12 +1,13 @@
 #include "Caster.h"
 #include "../Record/RecordInt/RecordInt.h"
 #include "../Record/RecordDouble/RecordDouble.h"
+#include "../Record/RecordInvalid/RecordInvalid.h"
 #include "../Table/Parser/Parser.h"
 #include <iostream>
 
 Record* Caster::string_to_rec(std::string val){
 
-    Record* rec;
+    Record* rec = new RecordInvalid();
 
     if(Parser::is_number(val)){
 

@@ -9,3 +9,8 @@ void Record::set_empty(bool empty){
 
     empty = empty;
 }
+
+Type Record::get_type(){
+
+    return this->type;
+}

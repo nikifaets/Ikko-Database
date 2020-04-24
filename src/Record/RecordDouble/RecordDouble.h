@@ -2,7 +2,7 @@
 
 class RecordDouble : public Record{
 
-    const Type rec_type = Double;
+    Type type = Double;
     double value = 0;
 
     public:
@@ -12,4 +12,5 @@ class RecordDouble : public Record{
     void parse(std::string value);
     double get_value();
     std::string to_string();
+    Type get_type();
 };

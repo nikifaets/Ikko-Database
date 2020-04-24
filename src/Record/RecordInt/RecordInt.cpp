@@ -1,13 +1,14 @@
 #include "RecordInt.h"
 #include <string>
 
-RecordInt::RecordInt(){}
+RecordInt::RecordInt() {}
 
 RecordInt::RecordInt(std::string val){
 
     parse(val);
 
 }
+
 void RecordInt::parse(std::string value){
 
     int multiplier = 1;
@@ -27,4 +28,9 @@ long long RecordInt::get_value(){
 std::string RecordInt::to_string(){
 
     return std::to_string(value);
+}
+
+Type RecordInt::get_type(){
+
+    return type;
 }

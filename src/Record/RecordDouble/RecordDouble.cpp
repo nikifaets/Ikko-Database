@@ -21,3 +21,8 @@ std::string RecordDouble::to_string(){
 
     return std::to_string(value);
 }
+
+Type RecordDouble::get_type(){
+
+    return type;
+}
