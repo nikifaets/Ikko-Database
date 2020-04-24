@@ -1,6 +1,5 @@
 #include "RecordDouble.h"
 
-
 RecordDouble::RecordDouble(){}
 RecordDouble::RecordDouble(std::string val){
 
@@ -19,6 +18,10 @@ double RecordDouble::get_value(){
 
 std::string RecordDouble::to_string(){
 
+    if(empty){
+
+        return NULL_REC;
+    }
     return std::to_string(value);
 }
 

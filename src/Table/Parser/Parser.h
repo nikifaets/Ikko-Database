@@ -17,7 +17,7 @@ class Parser{
     static bool is_digit(char c);
     static bool validate_type_data(std::vector<std::string>);
     static std::vector<std::string> parse_line_str(std::string line);
-    static std::vector <Record*> parse_line(std::string line);
+    static std::vector <Record*> parse_line(std::string line, std::vector<Type> types);
     static std::vector <Type> parse_type_data(std::string line);
 
 };

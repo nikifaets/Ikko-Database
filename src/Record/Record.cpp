@@ -7,7 +7,7 @@ bool Record::is_empty(){
 
 void Record::set_empty(bool empty){
 
-    empty = empty;
+    this->empty = empty;
 }
 
 Type Record::get_type(){

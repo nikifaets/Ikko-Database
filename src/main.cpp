@@ -21,5 +21,11 @@ int main(){
     cout << rows[0].get_records().size() << endl;
 
     table.save_table("../test_o1");
+
+    /*RecordInt rint("123");
+    Record* rec;
+    rec = &rint;
+    rec->set_empty(true);
+    cout << rec->is_empty();*/
 }
 

@@ -27,6 +27,11 @@ long long RecordInt::get_value(){
 
 std::string RecordInt::to_string(){
 
+    if(empty){
+        
+        return NULL_REC;
+    }
+
     return std::to_string(value);
 }
 

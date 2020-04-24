@@ -34,7 +34,7 @@ bool Parser::is_digit(char c){
     return c >= '0' && c <= '9';
 }
 
-std::vector<Record*> Parser::parse_line(std::string line){
+std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> types){
 
     std::vector<Record*> recs;
 
@@ -42,7 +42,20 @@ std::vector<Record*> Parser::parse_line(std::string line){
 
     for(int i=0; i<line_str.size(); i++){
 
-        Record* rec = Caster::string_to_rec(line_str[i]);
+        Record* rec;
+
+        if(!line_str[i].compare(NULL_REC)){
+
+            rec = Caster::type_to_rec(types[i]);            
+            rec->set_empty(true);
+
+        }
+
+        else{
+
+            rec = Caster::string_to_rec(line_str[i]);
+
+        }
 
         if(rec->get_type() == Invalid){
 
@@ -65,13 +78,12 @@ std::vector<std::string> Parser::parse_line_str(std::string line){
 
         if(line[i] < MIN_ASCII) continue;
 
-        if(is_digit(line[i])){
 
-            std::string val = read_until_whitespace(line.substr(i));
-            i += val.size();
+        std::string val = read_until_whitespace(line.substr(i));
+        i += val.size();
 
-            line_recs.push_back(val);
-        }
+        line_recs.push_back(val);
+
     }
 
     return line_recs;
