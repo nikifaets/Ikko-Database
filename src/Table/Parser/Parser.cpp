@@ -4,6 +4,9 @@
 #include <iostream>
 #include "../../Message/Message.h"
 
+
+const std::unordered_set<char> Parser::separators = {'\t', ' '};
+
 bool Parser::is_number(std::string val){
 
     for(int i=0; i<val.size(); i++){
@@ -34,6 +37,11 @@ bool Parser::is_digit(char c){
     return c >= '0' && c <= '9';
 }
 
+bool Parser::is_separator(char c){
+
+    return separators.find(c) != separators.end();
+}
+
 std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> types){
 
     std::vector<Record*> recs;
@@ -58,7 +66,7 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
         }
 
         if(rec->get_type() == Invalid){
-
+            
             Message::InvalidRecord(i);
             return std::vector<Record*>();
 
@@ -76,7 +84,7 @@ std::vector<std::string> Parser::parse_line_str(std::string line){
 
     for(int i=0; i<line.size(); i++){
 
-        if(line[i] < MIN_ASCII) continue;
+        if(is_separator(line[i])) continue;
 
 
         std::string val = read_until_whitespace(line.substr(i));

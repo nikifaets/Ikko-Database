@@ -2,12 +2,15 @@
 
 #include <string>
 #include <vector>
+#include <unordered_set>
 #include "../../Record/Record.h"
 
 class Parser{
 
     static const int MIN_ASCII = 41;
     static std::string read_until_whitespace(std::string str);
+    static bool is_separator(char c);
+    static const std::unordered_set<char> separators;
 
     public:
 

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <map>
 #include "Record/Record.h"
 #include "Record/RecordInt/RecordInt.h"
 #include "Record/RecordDouble/RecordDouble.h"

@@ -80,6 +80,7 @@ void Table::save_table(std::string filename){
     }
 }
 
+//convert the types of the table to a single string
 std::string Table::types_to_str(){
 
     std::string str;
@@ -97,6 +98,7 @@ std::string Table::types_to_str(){
     return str;
 }
 
+//convert the names of the table columns to a single string
 std::string Table::col_names_to_str(){
 
     std::string str;
@@ -123,6 +125,8 @@ bool Table::validate_row(Row row){
 
         return false;
     }
+
+    
     if(recs.size() != row_types.size()){
 
         Message::WrongNumberOfColumns(row_types.size(), recs.size());
