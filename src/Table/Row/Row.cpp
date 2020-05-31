@@ -14,6 +14,7 @@ void Row::add_empty_record(Type type){
     Record* new_rec = Caster::type_to_rec(type);
     new_rec->set_empty(true);
     records.push_back(new_rec); 
+    std::cout << "push_back. size is " << records.size() << std::endl;
 }
 
 void Row::add_record(Record* rec){

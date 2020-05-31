@@ -2,6 +2,7 @@
 #include <string>
 
 enum Type{Int, Double, String, Null, Invalid};
+
 const std::string NULL_REC = "Null";
 
 class Record{
