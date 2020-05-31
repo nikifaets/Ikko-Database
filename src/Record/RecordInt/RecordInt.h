@@ -12,9 +12,10 @@ class RecordInt : public Record{
     RecordInt(std::string val);
     RecordInt();
     void parse(std::string value);
-    long long get_value();
+    long long get_value() const;
     std::string to_string();
-    Type get_type();
+    Type get_type() const;
 
+    bool operator==(const RecordInt& other) const;
 
 };

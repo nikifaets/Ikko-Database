@@ -20,7 +20,7 @@ void RecordInt::parse(std::string value){
     this->value = stoi(value);
 }
 
-long long RecordInt::get_value(){
+long long RecordInt::get_value() const{
 
     return this->value;
 }
@@ -35,7 +35,12 @@ std::string RecordInt::to_string(){
     return std::to_string(value);
 }
 
-Type RecordInt::get_type(){
+Type RecordInt::get_type() const{
 
     return type;
+}
+
+bool RecordInt::operator ==(const RecordInt& other) const{
+
+    return other.get_type() == type && other.get_value() == value;
 }

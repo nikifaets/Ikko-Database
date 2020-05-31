@@ -18,7 +18,10 @@ class Record{
     virtual bool is_empty();
     virtual void set_empty(bool empty);
     virtual std::string to_string() = 0;
-    virtual Type get_type();
+    virtual int get_value() = 0;
+    virtual Type get_type() const;
+
+    //virtual bool operator==(const Record& other) const = 0;
     
 
 };
