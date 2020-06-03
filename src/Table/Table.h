@@ -4,6 +4,7 @@
 
 class Table{
 
+    std::string name;
     std::vector <Row> rows;
     std::vector<Type> row_types;
     std::vector<std::string> col_names;
@@ -15,8 +16,15 @@ class Table{
 
     public:
 
+    Table(std::string name);
+    Table();
     std::vector<Row> get_rows();
     void read_table(std::string filename);
     void save_table(std::string filename);
+    std::string get_name();
+    void set_name(std::string new_name);
+    void print_types();
+    template <typename T, typename std::enable_if<std::is_base_of<Record, T>::value>::type* = nullptr>
+    std::vector<Row> find_rows_by_value(int column, T* val);
 
 };

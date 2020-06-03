@@ -6,6 +6,7 @@ class Message{
 
     public:
     static void FileNotFound(std::string filename);
+    static void NameTaken();
     static void CorruptedTypeInformation(std::string filename);
     static void WrongDataType(int col_idx);
     static void CorruptedRow(int row_idx);

@@ -3,36 +3,26 @@
 #include <string>
 #include "Table/Row/Row.h"
 #include "Table/Table.h"
+#include "Database/Database.h"
+#include "Record/RecordInt/RecordInt.h"
 
 using namespace std;
 
 void test(string read_filename, string write_filename){
 
-    Table table;
-    table.read_table(read_filename);
-    if(!table.get_rows().size()) return;
 
-    vector<Row> rows = table.get_rows();
+    Table table("gege1");
+    table.read_table("../test1_o");
 
-    cout << "Rows in Table: " << rows.size() << endl;
+    RecordInt rec("15");
 
-    for(int i=0; i<rows.size(); i++){
-
-        string row_string = rows[i].to_string();
-
-        cout << "Row number " << i << endl;
-        cout << row_string << endl;
-    }
+    table.find_rows_by_value(0, &rec);
     
-    table.save_table(write_filename);
+
 
 }
 int main(){
 
-    
-    //Може да създадете собствени таблици и да ги тествате за четене и писане. В главната директория има предварително подготвени файлове "test", "test1", "test2"
-   //Засега поддържаните типове са само Int и Double!
-   test("../test1", "../test1_o");
-   return 0;
+    test("hui", "hui");
 }
 

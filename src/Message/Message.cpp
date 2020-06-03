@@ -30,5 +30,10 @@ void Message::WrongNumberOfColumns(int expected, int current){
 
 void Message::InvalidRecord(int col_idx){
 
-    std::cout << "Invalid record at column " << col_idx << std::endl;
+    std::cout << "Invalid record at column. " << col_idx << std::endl;
+}
+
+void Message::NameTaken(){
+
+    std::cout << "The name is already in use.";
 }
