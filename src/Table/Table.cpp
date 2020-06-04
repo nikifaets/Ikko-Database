@@ -22,7 +22,11 @@ void Table::set_name(std::string new_name){
 
     name = new_name;
 }
-void Table::read_table(std::string filename){
+
+void Table::read_table(std::string location){
+
+    std::string filename = location + "/" + name;
+
     std::ifstream table;
     table.open(filename);
 
@@ -72,9 +76,11 @@ void Table::read_table(std::string filename){
     table.close();
 }
 
-void Table::save_table(std::string filename){
+void Table::save_table(std::string location){
 
-    std::ofstream table(name);
+    std::string filename = location + "/" + name;
+
+    std::ofstream table(filename);
 
     std::cout << table.is_open() << " " << name << std::endl;
     //write names
@@ -96,8 +102,34 @@ void Table::save_table(std::string filename){
             table << std::endl;
         }
     }
+
+    table.close();
 }
 
+void Table::add_row(Row row){
+
+    std::vector<Record*> records = row.get_records();
+    
+    //validate row types
+    if(records.size() != row_types.size()){
+
+        Message::WrongNumberOfColumns(row_types.size(), records.size());
+        return;
+    }
+
+    for(int i=0; i<records.size(); i++){
+
+        if(records[i]->get_type() != row_types[i]){
+            
+            Message::WrongDataType(i);
+            return;
+        }
+    }
+
+    rows.push_back(row);
+
+
+}
 //convert the types of the table to a single string
 std::string Table::types_to_str(){
 
@@ -187,24 +219,37 @@ void Table::print_types(){
 }
 
 ///template <typename T, typename std::enable_if<std::is_base_of<Record, T>::value>::type* = nullptr>
-std::vector<Row> Table::find_rows_by_value(int column, T* val){
+std::vector<int> Table::find_rows_by_value(int column, Record* val){
 
 
-    
+    std::vector<int> found_rows;
+
     if(column >= col_names.size()){
 
-        Message::WrongNumberOfColumns(column+1, col_names.size());
-        return std::vector<Row>();
+        Message::WrongNumberOfColumns(column, col_names.size());
+        return found_rows;
     }
     
     //check type at current column
     Type type = row_types[column];
+    if(val->get_type() != type){
 
-    std::cout << "comparison " << std::endl;
-    std::cout << val->get_value() << std::endl; // == rows[0].get_records()[column]->get_value();
-    //if type == int
+        return found_rows;
+    }
 
+    //search all rows for the value
 
+    for(int i=0; i<rows.size(); i++){
+
+        Record* curr = rows[i].get_records()[column];
+
+        if(*curr == *val){
+
+            found_rows.push_back(i);
+        }
+    }
+
+    return found_rows;
 
 }
 

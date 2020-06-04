@@ -1,5 +1,6 @@
 #include "RecordInt.h"
 #include <string>
+#include <iostream>
 
 RecordInt::RecordInt() {}
 
@@ -8,6 +9,8 @@ RecordInt::RecordInt(std::string val){
     parse(val);
 
 }
+
+RecordInt::RecordInt(int val) : value(val){}
 
 void RecordInt::parse(std::string value){
 
@@ -37,10 +40,16 @@ std::string RecordInt::to_string(){
 
 Type RecordInt::get_type() const{
 
-    return type;
+    return Int;
 }
 
-bool RecordInt::operator ==(const RecordInt& other) const{
+bool RecordInt::operator ==(const Record& other) const{
 
-    return other.get_type() == type && other.get_value() == value;
+    if(const RecordInt* r_int = dynamic_cast< const RecordInt*>(&other)){
+
+        
+        return r_int->get_value() == value;
+    }
+
+    return false;
 }

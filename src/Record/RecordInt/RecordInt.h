@@ -9,6 +9,7 @@ class RecordInt : public Record{
     
     public:
 
+    RecordInt(int val);
     RecordInt(std::string val);
     RecordInt();
     void parse(std::string value);
@@ -16,6 +17,6 @@ class RecordInt : public Record{
     std::string to_string();
     Type get_type() const;
 
-    bool operator==(const RecordInt& other) const;
+    bool operator ==(const Record& other) const;
 
 };

@@ -12,7 +12,7 @@ bool Parser::is_number(std::string val){
     for(int i=0; i<val.size(); i++){
 
         if(!is_digit(val[i]) && val[i] != '.'){
-
+            
             return false;
         }
     }
@@ -53,9 +53,10 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
         Record* rec;
 
         if(!line_str[i].compare(NULL_REC)){
-
+        
             rec = Caster::type_to_rec(types[i]);            
             rec->set_empty(true);
+
 
         }
 
@@ -66,7 +67,7 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
         }
 
         if(rec->get_type() == Invalid){
-            
+
             Message::InvalidRecord(i);
             return std::vector<Record*>();
 

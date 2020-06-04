@@ -8,9 +8,10 @@ const std::string NULL_REC = "Null";
 class Record{
 
 
-    protected:
-
+    
     Type type = Invalid;
+
+    protected:
     bool empty = false;
 
     public:
@@ -25,6 +26,6 @@ class Record{
     virtual Type get_type() const;
 
     
-    //virtual bool operator==(const Record& other) const = 0;
+    virtual bool operator ==(const Record& other) const = 0;
 
 };

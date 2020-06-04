@@ -13,13 +13,13 @@ Record* Caster::string_to_rec(std::string val){
 
         if(Parser::is_double(val)){
 
-            rec = new RecordDouble(val);
+            return new RecordDouble(val);
 
         }
 
         else{
 
-            rec = new RecordInt(val);
+            return new RecordInt(val);
         }
     }
 

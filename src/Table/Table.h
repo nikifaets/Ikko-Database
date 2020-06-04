@@ -16,15 +16,14 @@ class Table{
 
     public:
 
-    Table(std::string name);
+    Table(std::string location);
     Table();
     std::vector<Row> get_rows();
-    void read_table(std::string filename);
-    void save_table(std::string filename);
+    void read_table(std::string location);
+    void save_table(std::string location);
     std::string get_name();
     void set_name(std::string new_name);
     void print_types();
-    template <typename T, typename std::enable_if<std::is_base_of<Record, T>::value>::type* = nullptr>
-    std::vector<Row> find_rows_by_value(int column, T* val);
-
+    std::vector<int> find_rows_by_value(int column, Record* val);
+    void add_row(Row row);
 };

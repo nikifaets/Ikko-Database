@@ -4,9 +4,12 @@
 #include <algorithm>
 #include "../Message/Message.h"
 
+const std::string Database::DATABASE_LOCATION = "../src/Database/Database";
+const std::string Database::TABLES_LOCATION = "../src/Database/Tables";
+
 Database::Database(){
 
-    std::ifstream database("Database");
+    std::ifstream database(DATABASE_LOCATION);
 
     //parse lines
     std::string line;
@@ -30,8 +33,8 @@ Table Database::load_table(std::string name){
 
     } 
 
-    Table table;
-    table.read_table(name);
+    Table table(name);
+    table.read_table(TABLES_LOCATION);
 
     return table;
 }
@@ -46,7 +49,7 @@ void Database::show_tables(){
     }
 }
 
-void Database::import(std::string filename){
+void Database::import_table(std::string filename){
 
     if(is_table_present(filename)){
 
