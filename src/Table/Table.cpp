@@ -6,13 +6,15 @@
 #include <type_traits>
 #include "../Record/RecordInt/RecordInt.h"
 #include "../Record/RecordDouble/RecordDouble.h"
+#include "../Caster/Caster.h"
 
-Table::Table(std::string name): name(name){}
+Table::Table(std::string filename){
 
-Table::Table(){
-
-    name = "";
+    read_table(filename);
 }
+
+Table::Table(){}
+
 std::string Table::get_name(){
 
     return name;
@@ -23,9 +25,7 @@ void Table::set_name(std::string new_name){
     name = new_name;
 }
 
-void Table::read_table(std::string location){
-
-    std::string filename = location + "/" + name;
+void Table::read_table(std::string filename){
 
     std::ifstream table;
     table.open(filename);
@@ -33,40 +33,48 @@ void Table::read_table(std::string location){
     if(!table.is_open()){
 
         Message::FileNotFound(filename);
+        loaded = false;
         return;
     }
 
     std::string line;
     
-    //read column names - first line
+    //read table name - first line
+    std::getline(table, line);
+    name = line;
+
+    //read column names - second line
     std::getline(table, line);
     col_names = Parser::parse_line_str(line);
 
-    //read type data - second line
+    //read type data - third line
     std::getline(table, line);
-    row_types = Parser::parse_type_data(line);
+    col_types = Parser::parse_type_data(line);
 
-    if(!row_types.size()){
+    if(!col_types.size()){
 
         Message::CorruptedTypeInformation(filename);
+        loaded = false;
         return;
     }
 
-    if(row_types.size() != col_names.size()){
+    if(col_types.size() != col_names.size()){
 
         Message::CorruptedTypeInformation(filename);
+        loaded = false;
         return;
     }
 
     //read rows
     while(std::getline(table, line)){
 
-        Row row(Parser::parse_line(line, row_types));
+        Row row(Parser::parse_line(line, col_types));
 
         if(!validate_row(row)){
 
             Message::CorruptedRow(rows.size());
             rows.clear();
+            loaded = false;
             return;
         }
 
@@ -76,14 +84,24 @@ void Table::read_table(std::string location){
     table.close();
 }
 
-void Table::save_table(std::string location){
+bool Table::is_loaded_correctly(){
 
-    std::string filename = location + "/" + name;
+    return loaded;
+}
+
+void Table::save_table(std::string filename){
 
     std::ofstream table(filename);
 
-    std::cout << table.is_open() << " " << name << std::endl;
-    //write names
+    if(!table.is_open()){
+
+        Message::CannotWriteFile(filename);
+        return;
+    }
+    //write table name
+    table << name << std::endl;
+
+    //write column names
     std::string names = col_names_to_str();
     table << names << std::endl;
 
@@ -111,15 +129,15 @@ void Table::add_row(Row row){
     std::vector<Record*> records = row.get_records();
     
     //validate row types
-    if(records.size() != row_types.size()){
+    if(records.size() != col_types.size()){
 
-        Message::WrongNumberOfColumns(row_types.size(), records.size());
+        Message::WrongNumberOfColumns(col_types.size(), records.size());
         return;
     }
 
     for(int i=0; i<records.size(); i++){
 
-        if(records[i]->get_type() != row_types[i]){
+        if(records[i]->get_type() != col_types[i]){
             
             Message::WrongDataType(i);
             return;
@@ -130,16 +148,30 @@ void Table::add_row(Row row){
 
 
 }
+
+void Table::add_empty_column(std::string name, Type type){
+
+    col_names.push_back(name);
+    col_types.push_back(type);
+
+
+    for(int i=0; i<rows.size(); i++){
+
+        rows[i].add_empty_record(type);
+    }
+
+    
+}
 //convert the types of the table to a single string
 std::string Table::types_to_str(){
 
     std::string str;
-    for(int i=0; i<row_types.size(); i++){
+    for(int i=0; i<col_types.size(); i++){
 
-        Type type = row_types[i];
+        Type type = col_types[i];
         str += std::to_string(int(type));
         
-        if(i < row_types.size()-1){
+        if(i < col_types.size()-1){
 
             str += '\t';
         }
@@ -177,15 +209,15 @@ bool Table::validate_row(Row row){
     }
 
     
-    if(recs.size() != row_types.size()){
+    if(recs.size() != col_types.size()){
 
-        Message::WrongNumberOfColumns(row_types.size(), recs.size());
+        Message::WrongNumberOfColumns(col_types.size(), recs.size());
         return false;
     }
 
     for(int i=0; i<recs.size(); i++){
 
-        if(recs[i]->get_type() != row_types[i]){
+        if(recs[i]->get_type() != col_types[i]){
 
             Message::WrongDataType(i);
             return false;
@@ -205,12 +237,12 @@ void Table::print_types(){
     std::string types[3] = {"Int", "Double", "String"};
     std::string types_str;
 
-    for(int i=0; i<row_types.size(); i++){
+    for(int i=0; i<col_types.size(); i++){
 
-        int type = int(row_types[i]);
+        int type = int(col_types[i]);
         types_str += types[type];
 
-        if(i<row_types.size()-1){
+        if(i<col_types.size()-1){
 
             types_str += " ";
         }
@@ -231,7 +263,7 @@ std::vector<int> Table::find_rows_by_value(int column, Record* val){
     }
     
     //check type at current column
-    Type type = row_types[column];
+    Type type = col_types[column];
     if(val->get_type() != type){
 
         return found_rows;

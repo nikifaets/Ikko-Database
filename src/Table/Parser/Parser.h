@@ -22,5 +22,6 @@ class Parser{
     static std::vector<std::string> parse_line_str(std::string line);
     static std::vector <Record*> parse_line(std::string line, std::vector<Type> types);
     static std::vector <Type> parse_type_data(std::string line);
+    static bool has_whitespace(std::string str);
 
 };

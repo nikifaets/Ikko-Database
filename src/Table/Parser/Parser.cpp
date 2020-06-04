@@ -154,3 +154,9 @@ std::string Parser::read_until_whitespace(std::string str){
     return parsed;
 
 }
+
+bool Parser::has_whitespace(std::string str){
+
+    std::string first_word = read_until_whitespace(str);
+    return first_word.size() != str.size();
+}

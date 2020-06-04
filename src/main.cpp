@@ -13,9 +13,9 @@ using namespace std;
 int main(){
 
     Tester tester;
-    tester.test_load_database();
-    tester.test_load_table("test_table1");
-    tester.test_import_table("test_table1");
-    tester.test_load_table("test_table1");
+    //tester.test_import_table("../src/Database/Tables/test_import");
+    //tester.test_export_table("Dogs", "../baddogs");
+    //tester.test_select_rows("Dogs", 1, new RecordDouble(12.23));
+    tester.test_add_empty_col("Dogs", "NewCol", Type::Int);
 }
 

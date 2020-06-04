@@ -12,4 +12,6 @@ class Message{
     static void CorruptedRow(int row_idx);
     static void WrongNumberOfColumns(int expected, int current);
     static void InvalidRecord(int col_idx);
+    static void CannotWriteFile(std::string filename);
+    static void Custom(std::string msg);
 };

@@ -37,3 +37,13 @@ void Message::NameTaken(){
 
     std::cout << "The name is already in use.";
 }
+
+void Message::CannotWriteFile(std::string filename){
+
+    std::cout << "Cannot open file to write: " + filename;
+}
+
+void Message::Custom(std::string msg){
+
+    std::cout << msg << std::endl;
+}

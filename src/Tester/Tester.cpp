@@ -27,25 +27,44 @@ void Tester::test_load_table(std::string table_name){
     table.save_table(Database::TABLES_LOCATION);
 } 
 
-void Tester::test_import_table(std::string table_name){
+void Tester::test_import_table(std::string filename){
 
     Database database;
 
-    Table table = database.load_table(table_name);
+    database.show_tables();
+    database.import_table(filename);
+    database.show_tables();
 
-    std::cout << "Number of columns in the table: " << std::endl;
-    table.print_types();
-    Record* rec1 = new RecordInt("15");
-    Record* rec2 = new RecordInt(177);
-    Record* rec3 = new RecordDouble("14.22");
 
-    std::vector<Record*> records1 = {rec1, rec2, rec3};
-    std::vector<Record*> records2 = {rec3, rec2, rec1};
+}
 
-    Row row(records1);
+void Tester::test_export_table(std::string name, std::string filename){
 
-    table.add_row(records1);
-    //table.save_table(Database::TABLES_LOCATION);
-    //add some rows
+    Database database;
+    database.show_tables();
+    std::cout << "Exporting table " + name + " into file \n" + filename << std::endl;
+    database.export_table(name, filename);
+}
+
+void Tester::test_select_rows(std::string name, int col, Record* val){
+
+    std::cout << "Search " + val->to_string() << std::endl;
+
+    Database database;
+    database.select_rows(name, col, val);
+}
+
+void Tester::test_add_empty_col(std::string tab_name, std::string col_name, Type type){
+
+    Database database;
+
+    std::cout << "Adding column to table " + tab_name + ": " << std::endl;
+    database.print_table(tab_name);
+    database.add_empty_column(tab_name, col_name, type);
+    database.print_table(tab_name);
+
+    std::cout << "Printing the same table from new database object:" << std::endl;
+    Database database_new;
+    database_new.print_table(tab_name);
 
 }
