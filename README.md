@@ -1,3 +1,3 @@
 # Ikko-Database
-A simple database implementation for an university assignment.
+A simple database implementation for a university assignment.
 Documentation coming soon
