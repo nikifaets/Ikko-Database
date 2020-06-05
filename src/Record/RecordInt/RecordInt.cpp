@@ -38,6 +38,11 @@ std::string RecordInt::to_string(){
     return std::to_string(value);
 }
 
+std::string RecordInt::to_present_string(){
+
+    return to_string();
+}
+
 Type RecordInt::get_type() const{
 
     return Int;
@@ -47,7 +52,7 @@ bool RecordInt::operator ==(const Record& other) const{
 
     if(const RecordInt* r_int = dynamic_cast< const RecordInt*>(&other)){
 
-        return r_int->get_value() == value || (other.is_empty() && this->empty);
+        return r_int->get_value() == value || (r_int->is_empty() && this->empty);
     }
 
     return false;

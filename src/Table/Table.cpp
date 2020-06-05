@@ -68,7 +68,9 @@ void Table::read_table(std::string filename){
     //read rows
     while(std::getline(table, line)){
 
-        Row row(Parser::parse_line(line, col_types));
+        std::vector<Record*> recs_in_line = Parser::parse_line(line, col_types);
+
+        Row row(recs_in_line);
 
         if(!validate_row(row)){
 
@@ -218,6 +220,7 @@ bool Table::validate_row(Row row){
 
     if(recs.size() == 0){
 
+        std::cout << "in validatre row recs size 0 " << std::endl;
         return false;
     }
 

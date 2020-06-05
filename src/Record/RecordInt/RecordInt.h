@@ -15,6 +15,7 @@ class RecordInt : public Record{
     void parse(std::string value);
     long long get_value() const;
     std::string to_string();
+    std::string to_present_string();
     Type get_type() const;
 
     bool operator ==(const Record& other) const;

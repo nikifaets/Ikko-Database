@@ -11,6 +11,7 @@ class Parser{
     static std::string read_until_whitespace(std::string str);
     static bool is_separator(char c);
     static const std::unordered_set<char> separators;
+    static bool validate_string(std::string str);
 
     public:
 

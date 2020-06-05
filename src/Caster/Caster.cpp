@@ -2,6 +2,7 @@
 #include "../Record/RecordInt/RecordInt.h"
 #include "../Record/RecordDouble/RecordDouble.h"
 #include "../Record/RecordInvalid/RecordInvalid.h"
+#include "../Record/RecordString/RecordString.h"
 #include "../Table/Parser/Parser.h"
 #include <iostream>
 
@@ -23,6 +24,11 @@ Record* Caster::string_to_rec(std::string val){
         }
     }
 
+    if(val[0] == '\"' && val[val.size()-1] == '\"'){
+
+        return new RecordString(val);
+    }
+
     return rec;
 }
 
@@ -38,6 +44,11 @@ Record* Caster::type_to_rec(Type type){
     if(type == Double){
 
         return new RecordDouble();
+    }
+
+    if(type == String){
+
+        return new RecordString();
     }
 }
 

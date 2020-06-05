@@ -47,7 +47,12 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
     std::vector<Record*> recs;
 
     std::vector<std::string> line_str = parse_line_str(line);
+    if(!line_str.size()){
 
+        return std::vector<Record*>();
+    }
+
+ 
     for(int i=0; i<line_str.size(); i++){
 
         Record* rec;
@@ -56,7 +61,6 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
         
             rec = Caster::type_to_rec(types[i]);            
             rec->set_empty(true);
-
 
         }
 
@@ -67,7 +71,7 @@ std::vector<Record*> Parser::parse_line(std::string line, std::vector<Type> type
         }
 
         if(rec->get_type() == Invalid){
-
+            
             Message::InvalidRecord(i);
             return std::vector<Record*>();
 
@@ -91,10 +95,13 @@ std::vector<std::string> Parser::parse_line_str(std::string line){
         std::string val = read_until_whitespace(line.substr(i));
         i += val.size();
 
+        if(! validate_string(val)) return std::vector<std::string>();
+        //std::cout << "Parsing lines " << val << " with len " << val.size() << std::endl;
         line_recs.push_back(val);
 
     }
 
+    //std::cout << "line parsed " << std::endl;
     return line_recs;
 }
 
@@ -145,6 +152,21 @@ std::string Parser::read_until_whitespace(std::string str){
     std::string parsed;
     int it = 0;
 
+    if(str[it] == '\"'){
+
+        parsed += str[it];
+        it++;
+        while(str[it] != '\"' || (str[it-1] == '\\' && str[it] == '\"')){
+
+            parsed += str[it];
+            it++;
+        }
+
+        parsed += str[it];
+
+        return parsed;
+    }
+
     while(str[it] >= MIN_ASCII){
 
         parsed.push_back(str[it]);
@@ -159,4 +181,16 @@ bool Parser::has_whitespace(std::string str){
 
     std::string first_word = read_until_whitespace(str);
     return first_word.size() != str.size();
+}
+
+bool Parser::validate_string(std::string str){
+
+    for(int i=1; i<str.size()-1; i++){
+
+        if(str[i] == '\"' && str[i-1] != '\\') return false;
+        if(str[i] == '\\' && str[i-1] != '\\' && str[i+1] != '\\' && str[i+1] != '\"') return false;
+    }
+
+    return true;
+
 }

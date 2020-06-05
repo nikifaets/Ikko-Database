@@ -28,6 +28,10 @@ std::string RecordDouble::to_string(){
     return std::to_string(value);
 }
 
+std::string RecordDouble::to_present_string(){
+
+    return to_string();
+}
 Type RecordDouble::get_type() const{
 
     return Double;
@@ -37,7 +41,7 @@ bool RecordDouble::operator == (const Record& other) const{
 
     if(const RecordDouble* r_double = dynamic_cast<const RecordDouble*>(&other)){
 
-        return abs(r_double->get_value() - value) <= COMP_EPS || (other.is_empty() && empty);
+        return abs(r_double->get_value() - value) <= COMP_EPS || (r_double->is_empty() && empty);
     }
 
     return false;

@@ -16,6 +16,7 @@ class RecordDouble : public Record{
     void parse(std::string value);
     double get_value() const;
     std::string to_string();
+    std::string to_present_string();
     Type get_type() const;
 
     virtual bool operator ==(const Record& other) const;

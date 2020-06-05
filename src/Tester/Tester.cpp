@@ -2,6 +2,7 @@
 #include "../Database/Database.h"
 #include "../Record/RecordDouble/RecordDouble.h"
 #include "../Record/RecordInt/RecordInt.h"
+#include "../Record/RecordString/RecordString.h"
 #include "../Table/Row/Row.h"
 #include "../Presenter/Presenter.h"
 #include <iostream>
@@ -89,7 +90,8 @@ void Tester::test_rec_comparison(){
 void Tester::test_update_rec(){
 
     Table table("../test_update");
-    
+    if(! table.is_loaded_correctly()) return;
+
     std::cout << "Table before update: " << std::endl;
     Presenter::show_table(table);
 
@@ -114,7 +116,7 @@ void Tester::test_update_rec(){
     Record* empty_rec = new RecordInt(3);
     empty_rec->set_empty(true);
 
-    table.update_column(3, empty_rec, 0, new RecordInt(69));
+    table.update_column(4, empty_rec, 3, new RecordInt("555"));
     std::cout << "After update: " << std::endl;
     Presenter::show_table(table);
 
@@ -122,7 +124,7 @@ void Tester::test_update_rec(){
 void Tester::test_delete_rows(){
 
     Table table("../test_update");
-    
+    if(!table.is_loaded_correctly()) return;
     std::cout << "Table before deletion " << std::endl;
     Presenter::show_table(table);
 

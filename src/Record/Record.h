@@ -20,6 +20,7 @@ class Record{
     virtual bool is_empty() const;
     virtual void set_empty(bool empty);
     virtual std::string to_string() = 0;
+    virtual std::string to_present_string() = 0;
 
     //template<typename T>
     //virtual T get_value() = 0;

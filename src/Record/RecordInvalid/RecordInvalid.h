@@ -10,6 +10,7 @@ class RecordInvalid: public Record{
 
     Type get_type();
     std::string to_string();
+    std::string to_present_string();
     void parse(std::string value);
     virtual bool operator == (const Record& other) const;
 };

@@ -45,6 +45,23 @@ std::string Row::to_string(){
     return row_string;
 }
 
+std::string Row::to_present_string(){
+
+    std::string row_string;
+    for(int i=0; i<records.size(); i++){
+
+        std::string rec_string = records[i]->to_present_string();
+        row_string += rec_string;
+
+        if(i<records.size()-1){
+
+            row_string += '\t';
+        }
+    }
+
+    return row_string;
+}
+
 std::vector <Record*> Row::get_records(){
 
     return this->records;
