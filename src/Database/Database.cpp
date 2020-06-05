@@ -41,8 +41,7 @@ Table Database::load_table(std::string name){
         return Table();
     }
 
-    int name_idx = name_to_filename(name);
-    Table table(table_filenames[name_idx]);
+    Table table(name_to_filename(name));
 
     return table;
 }
@@ -85,9 +84,8 @@ void Database::export_table(std::string name, std::string filename){
         return;
     }
 
-    int name_idx = name_to_filename(name);
 
-    Table table(table_filenames[name_to_filename(name)]);
+    Table table(name_to_filename(name));
     table.save_table(filename);
 }
 
@@ -99,12 +97,12 @@ bool Database::is_table_present(std::string name){
     return it != table_names.end();
 }
 
-int Database::name_to_filename(std::string name){
+std::string Database::name_to_filename(std::string name){
 
     std::vector<std::string> :: iterator it;
     it = std::find(table_names.begin(), table_names.end(), name);
     
-    return it - table_names.begin();
+    return *it;
 }
 
 void Database::describe_table(std::string name){
@@ -115,7 +113,7 @@ void Database::describe_table(std::string name){
         return;
     }
 
-    Table table = load_table(table_filenames[name_to_filename(name)]);
+    Table table = load_table(name_to_filename(name));
     table.print_types();
 
 }
@@ -128,7 +126,7 @@ void Database::rename_table(std::string name, std::string new_name){
         return;
     }
 
-    std::string table_filename = table_filenames[name_to_filename(name)];
+    std::string table_filename = name_to_filename(name);
 
     //change the name in the table's file
     Table table(table_filename);
@@ -136,7 +134,9 @@ void Database::rename_table(std::string name, std::string new_name){
     table.save_table(table_filename);
 
     //change the name in the Database's array of names
-    table_filenames[name_to_filename(name)] = new_name;
+    std::vector<std::string> :: iterator it = std::find(table_filenames.begin(), table_filenames.end(), table_filename);
+    int filename_idx = it - table_filenames.begin();
+    table_filenames[filename_idx] = new_name;
     
 }
 
@@ -158,7 +158,7 @@ void Database::add_empty_column(std::string table_name, std::string col_name, Ty
     }
 
     table.add_empty_column(col_name, type);
-    table.save_table(table_filenames[name_to_filename(table_name)]);
+    table.save_table(name_to_filename(table_name));
     std::cout << "Table saved" << std::endl;
 }
 void Database::select_rows(std::string name, int col, Record* val){

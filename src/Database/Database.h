@@ -13,7 +13,7 @@ class Database{
     std::vector<std::string> table_filenames;
 
     bool is_table_present(std::string name);
-    int name_to_filename(std::string name);
+    std::string name_to_filename(std::string name);
     void write();
     
     public:
