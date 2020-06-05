@@ -1,6 +1,6 @@
 #include "Record.h"
 
-bool Record::is_empty(){
+bool Record::is_empty() const {
 
     return this->empty;
 }
@@ -14,3 +14,4 @@ Type Record::get_type() const{
 
     return this->type;
 }
+

@@ -17,7 +17,7 @@ class Record{
     public:
 
     virtual void parse(std::string value) = 0;
-    virtual bool is_empty();
+    virtual bool is_empty() const;
     virtual void set_empty(bool empty);
     virtual std::string to_string() = 0;
 

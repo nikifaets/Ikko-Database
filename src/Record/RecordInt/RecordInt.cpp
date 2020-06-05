@@ -47,9 +47,9 @@ bool RecordInt::operator ==(const Record& other) const{
 
     if(const RecordInt* r_int = dynamic_cast< const RecordInt*>(&other)){
 
-        
-        return r_int->get_value() == value;
+        return r_int->get_value() == value || (other.is_empty() && this->empty);
     }
 
     return false;
 }
+

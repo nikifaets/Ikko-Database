@@ -149,6 +149,19 @@ void Table::add_row(Row row){
 
 }
 
+void Table::delete_rows(int col_idx, Record* val){
+
+    
+    std::vector<int> indices = find_rows_by_value(col_idx, val);
+    if(! indices.size()) return;
+
+    for(int i=0; i<indices.size(); i++){
+
+        // subtract i because with each erasion, the elements after indices[i] shift one to the left
+        rows.erase(rows.begin() + indices[i] - i); 
+    }
+}
+
 void Table::add_empty_column(std::string name, Type type){
 
     col_names.push_back(name);
@@ -250,6 +263,13 @@ void Table::print_types(){
     std::cout << types_str << std::endl;
 }
 
+void Table::count(int col_idx, Record* val){
+
+    std::vector<int> indices = find_rows_by_value(col_idx, val);
+    if(!indices.size()) return;
+
+    Message::Custom("Amount of rows that contain the value " + (val->to_string()) + ": " + std::to_string(indices.size()));
+}
 ///template <typename T, typename std::enable_if<std::is_base_of<Record, T>::value>::type* = nullptr>
 std::vector<int> Table::find_rows_by_value(int column, Record* val){
 
@@ -283,5 +303,27 @@ std::vector<int> Table::find_rows_by_value(int column, Record* val){
 
     return found_rows;
 
+}
+
+void Table::update_column(int search_col, Record* search_val, int target_col, Record* target_val){
+
+    if(search_col >= col_types.size() || search_col >= col_types.size()){
+
+        Message::WrongNumberOfColumns(col_types.size(), std::max(search_col, target_col));
+        return;
+    }
+
+    if(search_val->get_type() != col_types[search_col] || target_val->get_type() != col_types[target_col]){
+
+        Message::Custom("Record types do not match the column types.");
+        return;
+    }
+
+    std::vector<int> indices = find_rows_by_value(search_col, search_val);
+
+    for(int i=0; i<indices.size(); i++){
+
+        rows[indices[i]].change_rec(target_col, target_val);
+    }
 }
 

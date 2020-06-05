@@ -16,6 +16,9 @@ int main(){
     //tester.test_import_table("../src/Database/Tables/test_import");
     //tester.test_export_table("Dogs", "../baddogs");
     //tester.test_select_rows("Dogs", 1, new RecordDouble(12.23));
-    tester.test_add_empty_col("Dogs", "NewCol", Type::Int);
+    //tester.test_add_empty_col("Dogs", "NewCol", Type::Int);
+    //tester.test_rec_comparison();
+    //tester.test_update_rec();
+    tester.test_delete_rows();
 }
 

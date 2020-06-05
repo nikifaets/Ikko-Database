@@ -15,5 +15,6 @@ class Row{
     void add_record(std::string val);
     std::vector<Record*> get_records();
     std::string to_string();
+    void change_rec(int col_idx, Record* rec);
 
 };

@@ -49,3 +49,8 @@ std::vector <Record*> Row::get_records(){
 
     return this->records;
 }
+
+void Row::change_rec(int col_idx, Record* rec){
+
+    records[col_idx] = rec;
+}

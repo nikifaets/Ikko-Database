@@ -159,7 +159,21 @@ void Database::add_empty_column(std::string table_name, std::string col_name, Ty
 
     table.add_empty_column(col_name, type);
     table.save_table(name_to_filename(table_name));
-    std::cout << "Table saved" << std::endl;
+}
+
+
+void Database::insert(std::string table_name, Row row){
+
+    Table table = load_table(table_name);
+    table.add_row(row);
+    table.save_table(name_to_filename(table_name));
+}
+
+void Database::delete_rows(std::string table_name, int col_idx, Record* val){
+
+    Table table = load_table(table_name);
+    table.delete_rows(col_idx, val);
+    table.save_table(name_to_filename(table_name));
 }
 void Database::select_rows(std::string name, int col, Record* val){
 
@@ -170,9 +184,23 @@ void Database::select_rows(std::string name, int col, Record* val){
 
     Presenter::print_rows(table.get_rows(), row_idx);
 }
+
+void Database::update_column(std::string table_name, int search_col, Record* search_val, int target_col, Record* target_val){
+
+    Table table = load_table(table_name);
+    table.update_column(search_col, search_val, target_col, target_val);
+    table.save_table(name_to_filename(table_name));
+
+}
+
+void Database::count_cols(std::string table_name, int col_idx, Record* val){
+
+    Table table = load_table(table_name);
+    table.count(col_idx, val);
+}
 void Database::write(){
 
-    std::ofstream database("Database");
+    std::ofstream database(DATABASE_LOCATION);
 
     if(database.is_open()){
 

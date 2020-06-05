@@ -37,7 +37,7 @@ bool RecordDouble::operator == (const Record& other) const{
 
     if(const RecordDouble* r_double = dynamic_cast<const RecordDouble*>(&other)){
 
-        return abs(r_double->get_value() - value) <= COMP_EPS;
+        return abs(r_double->get_value() - value) <= COMP_EPS || (other.is_empty() && empty);
     }
 
     return false;

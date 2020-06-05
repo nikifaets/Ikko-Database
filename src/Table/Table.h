@@ -29,4 +29,7 @@ class Table{
     std::vector<int> find_rows_by_value(int column, Record* val);
     void add_row(Row row);
     void add_empty_column(std::string name, Type type);
+    void update_column(int search_col, Record* search_val, int target_col, Record* target_val);
+    void delete_rows(int col_idx, Record* val);
+    void count(int col_idx, Record* val);
 };

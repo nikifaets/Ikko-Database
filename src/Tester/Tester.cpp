@@ -3,6 +3,7 @@
 #include "../Record/RecordDouble/RecordDouble.h"
 #include "../Record/RecordInt/RecordInt.h"
 #include "../Table/Row/Row.h"
+#include "../Presenter/Presenter.h"
 #include <iostream>
 
 void Tester::test_load_database(){
@@ -67,4 +68,67 @@ void Tester::test_add_empty_col(std::string tab_name, std::string col_name, Type
     Database database_new;
     database_new.print_table(tab_name);
 
+}
+
+void Tester::test_rec_comparison(){
+
+    Record* r_double1 = new RecordDouble("123.1");
+    Record* r_double2 = new RecordDouble("123.1");
+    Record* r_empty1 = new RecordDouble(11.1);
+    r_empty1->set_empty(true);
+    Record* r_empty2 = new RecordDouble(115.2);
+    r_empty2->set_empty(true);
+
+
+    std::cout << "Comparing equal: " << (*r_double1 == *r_double2) << std::endl; 
+    std::cout << "comparing empty: " << (*r_empty1 == *r_empty2) << std::endl;
+    std::cout << "compare empty with non empty (different) " <<
+    (*r_double1 == *r_empty1) << std::endl; 
+}
+
+void Tester::test_update_rec(){
+
+    Table table("../test_update");
+    
+    std::cout << "Table before update: " << std::endl;
+    Presenter::show_table(table);
+
+    table.update_column(0, new RecordInt(15), 1, new RecordInt(23));
+
+    std::cout << "Table update: " << std::endl;
+    Presenter::show_table(table);
+
+    std::cout << "Test update for different column types: " << std::endl;
+    table.update_column(1, new RecordInt(23), 2, new RecordDouble(5.5));
+    std::cout << "Table after update:" << std::endl;
+    Presenter::show_table(table);
+
+    std::cout << "Validation test: Wrong type" << std::endl;
+    table.update_column(0, new RecordDouble(12.2), 1, new RecordInt(100));
+
+    std::cout << "Table after validation test: " << std::endl;
+    Presenter::show_table(table);
+
+    std::cout << "Test comparison with Null value" << std::endl;
+    table.add_empty_column("Empty", Type::Int);
+    Record* empty_rec = new RecordInt(3);
+    empty_rec->set_empty(true);
+
+    table.update_column(3, empty_rec, 0, new RecordInt(69));
+    std::cout << "After update: " << std::endl;
+    Presenter::show_table(table);
+
+}
+void Tester::test_delete_rows(){
+
+    Table table("../test_update");
+    
+    std::cout << "Table before deletion " << std::endl;
+    Presenter::show_table(table);
+
+    table.count(0, new RecordInt(15));
+    table.delete_rows(0, new RecordInt(15));
+    std::cout << "Table after deletion " << std::endl;
+    Presenter::show_table(table);
+    
 }

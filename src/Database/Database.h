@@ -29,4 +29,8 @@ class Database{
     void print_table(std::string name);
     void select_rows(std::string name, int col, Record* val);
     void add_empty_column(std::string table_name, std::string col_name, Type type);
+    void update_column(std::string table_name, int search_col, Record* search_val, int target_col, Record* target_val);
+    void insert(std::string table_name, Row row);
+    void delete_rows(std::string table_name, int search_col, Record* val);
+    void count_cols(std::string table_name, int col_idx, Record* val);
 };
