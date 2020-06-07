@@ -52,7 +52,6 @@ RecordNumber* Utils::aggregate(Table table, std::vector<int> idx, int col, std::
         val_holder = aggregator(curr, val_holder);
     }
 
-    std::cout << "Result: " << val_holder->to_present_string();
 
     return val_holder;
 }
