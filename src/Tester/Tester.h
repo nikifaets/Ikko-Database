@@ -18,4 +18,5 @@ class Tester{
     void test_delete_rows();
     void test_concat();
     void test_innerjoin();
+    void test_aggregate();
 };

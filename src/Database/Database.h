@@ -36,5 +36,6 @@ class Database{
     void delete_rows(std::string table_name, int search_col, Record* val);
     void count_cols(std::string table_name, int col_idx, Record* val);
     void innerjoin(std::string table1, int col1, std::string table2, int col2);
+    void aggregate(std::string table_name, int search_col, Record* search_val, int target_col, std::string operation);
 
 };

@@ -16,8 +16,8 @@ class RecordString : public Record{
     
     std::string get_value() const;
     void parse(std::string val);
-    std::string to_string();
-    std::string to_present_string();
+    std::string to_string() const;
+    std::string to_present_string() const;
     Type get_type() const;
 
     bool operator ==(const Record& other) const;

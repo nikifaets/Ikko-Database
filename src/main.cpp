@@ -23,6 +23,7 @@ int main(){
     //tester.test_delete_rows();
     //tester.test_concat();
     //tester.test_innerjoin();
+    //tester.test_aggregate();
     CLIParser::instantiate();
     CLIParser::parse();
 }

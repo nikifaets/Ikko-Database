@@ -31,7 +31,7 @@ class CLIParser{
     static void parse_sisi(std::string action, std::vector<std::string> args);
     static void parse_sirir(std::string action, std::vector<std::string> args);
     static void parse_sv(std::string action, std::vector<std::string> args);
-    static void parse_sisif(std::string action, std::vector<std::string> args);
+    static void parse_siris(std::string action, std::vector<std::string> args);
 
 
     static const std::unordered_set<std::string> commands;
@@ -40,9 +40,8 @@ class CLIParser{
     static std::unordered_map<std::string, std::function<void(std::string, std::vector<std::string>)> > map_to_parser;
     static std::unordered_map<std::string, std::function<void(std::string, std::vector<std::string>)> > map_to_parser_sir;
     static std::unordered_map<std::string, std::function<void(std::string, std::vector<std::string>)> > map_to_parser_ss;
-    //todo: all the others
+    
     //map to sender funcs
-
     static std::unordered_map<std::string, std::function<void()> > command_to_func_noargs;
     static std::unordered_map<std::string, std::function<void(std::string)> >command_to_func_s;
     static std::unordered_map<std::string, std::function<void(std::string, std::string)> > command_to_func_ss;
@@ -51,7 +50,7 @@ class CLIParser{
     static std::unordered_map<std::string, std::function<void(std::string, int, Record*, int, Record*)> >command_to_func_sirir;
     static std::unordered_map<std::string, std::function<void(std::string, std::vector<Record*>)> > command_to_func_sv;
     static std::unordered_map<std::string, std::function<void(std::string, int, std::string, int)> > command_to_func_sisi;
-    //todo::agregate
+    static std::unordered_map<std::string, std::function<void(std::string, int, Record*, int, std::string)> > command_to_func_siris;
 
     static void save();
     static void save_as(std::string arg);
@@ -71,7 +70,7 @@ class CLIParser{
     static void send_innerjoin(std::string arg1, int col1, std::string arg2, int col2);
     static void send_rename(std::string arg1, std::string arg2);
     static void send_count(std::string arg1, int col, Record* rec);
-    //static void send_aggregate(std::string)
+    static void send_aggregate(std::string arg1, int col1, Record* rec, int col2, std::string arg2);
 
     static void fill_maps();
 

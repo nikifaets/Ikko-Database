@@ -38,7 +38,7 @@ void RecordString::parse(std::string val_raw){
 
 }
 
-std::string RecordString::to_string(){
+std::string RecordString::to_string() const{
 
     if(empty){
 
@@ -47,7 +47,7 @@ std::string RecordString::to_string(){
     return value_raw;
 }
 
-std::string RecordString::to_present_string(){
+std::string RecordString::to_present_string() const{
 
     if(empty){
 

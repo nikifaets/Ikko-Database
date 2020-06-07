@@ -168,3 +168,16 @@ void Tester::test_innerjoin(){
     database.print_table("InnerJoin_TestImport_Test1");
     
 }
+
+void Tester::test_aggregate(){
+
+    Database database;
+    
+    std::cout << "Loaded Table: " << std::endl;
+    database.print_table("Dogs");
+    database.aggregate("Dogs", 1, new RecordDouble(12.23), 0, "sum");
+    
+    std::cout << "Expecting error: " << std::endl;
+    database.aggregate("Dogs", 1, new RecordString("hoo"), 0, "min");
+
+}

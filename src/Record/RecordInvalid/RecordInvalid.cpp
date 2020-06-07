@@ -6,8 +6,8 @@ Type RecordInvalid::get_type(){
 }
 
 void RecordInvalid::parse(std::string value){}
-std::string RecordInvalid::to_string(){}
-std::string RecordInvalid::to_present_string(){}
+std::string RecordInvalid::to_string() const{}
+std::string RecordInvalid::to_present_string() const{}
 
 bool RecordInvalid::operator == (const Record& other) const{
 

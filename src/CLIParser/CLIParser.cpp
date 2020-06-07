@@ -26,6 +26,8 @@ std::unordered_map<std::string, std::function<void(std::string, std::string, Typ
 std::unordered_map<std::string, std::function<void(std::string, int, Record*, int, Record*)> > CLIParser::command_to_func_sirir;
 std::unordered_map<std::string, std::function<void(std::string, std::vector<Record*>)> > CLIParser::command_to_func_sv;
 std::unordered_map<std::string, std::function<void(std::string, int, std::string, int)> > CLIParser::command_to_func_sisi;
+std::unordered_map<std::string, std::function<void(std::string, int, Record*, int, std::string)> > CLIParser::command_to_func_siris;
+
 
 CLIParser::CLIParser(){
 
@@ -94,12 +96,14 @@ void CLIParser::fill_maps(){
     //sisi parse mapper
     CLIParser::map_to_parser["innerjoin"] = CLIParser::parse_sisi;
 
-    //sisir parse mapper
+    //sirir parse mapper
     CLIParser::map_to_parser["update"] = CLIParser::parse_sirir;
 
-    //sisif
-     //sv parse mapper
-     CLIParser::map_to_parser["insert"] = CLIParser::parse_sv;
+    //sv parse mapper
+    CLIParser::map_to_parser["insert"] = CLIParser::parse_sv;
+
+    //siris parse mapper
+    CLIParser::map_to_parser["aggregate"] = CLIParser::parse_siris;
 
     //noargs action mapper
     CLIParser::command_to_func_noargs["showtables"] = CLIParser::send_show;
@@ -133,6 +137,9 @@ void CLIParser::fill_maps(){
 
     //sv action mapper
     CLIParser::command_to_func_sv["insert"] = CLIParser::send_insert;
+
+    //siris action mapper
+    CLIParser::command_to_func_siris["aggregate"] = CLIParser::send_aggregate;
 }
 
 
@@ -144,6 +151,16 @@ void CLIParser::save(){
 void CLIParser::help(){
 
     Message::Custom("You lost, huh?");
+    std::unordered_set<std::string>::iterator it;
+
+    std::cout << "List of available commands: " << std::endl;
+    for(auto it: commands){
+
+        std::cout << it << std::endl;
+    }
+
+    std::cout << "For more information, please refer to the following document:" << std::endl;
+    std::cout << "https://docs.google.com/document/d/1quesENVOm28Ue37vGhU2oB4d-dsUG0VX1mCELxx6LN4/edit#heading=h.6yfyd6gy9ewc" << std::endl;
 }
 
 
@@ -222,6 +239,11 @@ void CLIParser::send_update(std::string arg1, int col1, Record* rec1, int col2, 
 void CLIParser::send_insert(std::string arg1, std::vector<Record*> recs){
 
     database.insert(arg1, Row(recs));
+}
+
+void CLIParser::send_aggregate(std::string arg1, int col1, Record* rec, int col2, std::string arg2){
+
+    database.aggregate(arg1, col1, rec, col2, arg2);
 }
 
 void CLIParser::parse_noargs(std::string action, std::vector<std::string> args){
@@ -399,6 +421,34 @@ void CLIParser::parse_sv(std::string action, std::vector<std::string> args){
     }
 
     command_to_func_sv[action](args[0], recs);
+}
+
+void CLIParser::parse_siris(std::string action, std::vector<std::string> args){
+
+    if(args.size()<5){
+
+        Message::InvalidInput();
+        return;
+    }
+
+    int col1, col2;
+    Record* rec;
+
+    try{
+
+        col1 = parse_int(args[1]);
+        col2 = parse_int(args[3]);
+        rec = parse_rec(args[2]);
+        
+    }
+
+    catch(int err){
+
+        Message::InvalidInput();
+        return;
+    }
+
+    command_to_func_siris[action](args[0], col1, rec, col2, args[4]);
 }
 
 int CLIParser::parse_int(std::string val){

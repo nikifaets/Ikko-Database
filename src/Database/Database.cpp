@@ -5,7 +5,7 @@
 #include "../Message/Message.h"
 #include "../Presenter/Presenter.h"
 #include "../Table/Parser/Parser.h"
-#include "../Utils/Utils.cpp"
+#include "../Utils/Utils.h"
 
 const std::string Database::DATABASE_LOCATION = "../src/Database/Database";
 const std::string Database::TABLES_LOCATION = "../src/Database/Tables";
@@ -276,7 +276,44 @@ void Database::innerjoin(std::string table1_name, int col1, std::string table2_n
     
 }
 
+void Database::aggregate(std::string table_name, int search_col, Record* search_val, int target_col, std::string operation){
 
+    Table table = load_table(table_name);
+    if(!table.is_loaded_correctly()){
+
+        Message::TableNotFound(table_name);
+        return;
+    }
+
+    std::vector<Type> table_types = table.get_types();
+
+    if(search_col > table_types.size() || target_col > table_types.size()){
+
+        Message::WrongNumberOfColumns(table_types.size()-1, std::max(search_col, target_col));
+        return;
+    }
+
+    std::unordered_set<std::string> operations {"min", "max", "sum", "product"};
+    if(operations.find(operation) == operations.end()){
+
+        Message::InvalidInput();
+        return;
+    }
+
+    if(table_types[search_col] > Type::Double || table_types[target_col] > Type::Double ||
+        search_val->get_type() > Type::Double){
+
+        Message::Custom("Data types should be numeric.");
+        return;
+    }
+
+    std::vector<int> idx = table.find_rows_by_value(search_col, search_val);
+
+    Record* res = Utils::aggregate(table, idx, target_col, operation);
+    std::cout << "Result of aggregation: " << std::endl;
+    std::cout << res->to_present_string() << std::endl;
+
+}
 void Database::write(std::string path){
 
     std::ofstream database(path);

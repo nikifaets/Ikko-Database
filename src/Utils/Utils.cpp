@@ -1,23 +1,58 @@
-#pragma once
 #include "Utils.h"
-#include <vector>
+#include <unordered_map>
+#include <iostream>
 
-template<typename T>
-std::vector<T> Utils::concatenate(std::vector<T> v1, std::vector<T> v2){
 
-    std::vector<T> res;
-    
-    //walk through first vec
-    for(int i=0; i<v1.size(); i++){
+RecordNumber* Utils::get_max(RecordNumber* arg, RecordNumber* val_holder){
 
-        res.push_back(v1[i]);
+    if( * arg > *val_holder) return arg;
+    return val_holder;
+}
+
+RecordNumber* Utils::get_min(RecordNumber* arg, RecordNumber* val_holder){
+
+    if(*arg < *val_holder) return arg;
+    return val_holder;
+}
+
+RecordNumber* Utils::add(RecordNumber* arg, RecordNumber* val_holder){
+
+    val_holder = *val_holder + *arg;
+    return val_holder;
+}
+
+RecordNumber* Utils::multiply(RecordNumber* arg, RecordNumber* val_holder){
+
+    val_holder = *val_holder * (*arg);
+    return val_holder;
+}
+
+RecordNumber* Utils::aggregate(Table table, std::vector<int> idx, int col, std::string operation){
+
+    typedef RecordNumber* (*aggregator_f)(RecordNumber* arg, RecordNumber* val_holder);
+
+    std::unordered_map<std::string, aggregator_f> map_to_aggr = {
+
+        {"min", &Utils::get_min},
+        {"max", &Utils::get_max},
+        {"sum", &Utils::add},
+        {"product", &Utils::multiply}
+    };
+
+
+    RecordNumber* (*aggregator)(RecordNumber* arg, RecordNumber* val_holder) = map_to_aggr[operation];
+    std::vector<Row> rows = table.get_rows();
+
+    RecordNumber* val_holder = dynamic_cast<RecordNumber*>(rows[idx[0]].get_records()[col]);
+
+    for(int i=1; i<idx.size(); i++){
+
+        Record* curr_rec = rows[idx[i]].get_records()[col];
+        RecordNumber* curr = dynamic_cast<RecordNumber*>(curr_rec);
+        val_holder = aggregator(curr, val_holder);
     }
 
-    //walk thorugh second vec
-    for(int i=0; i<v2.size(); i++){
+    std::cout << "Result: " << val_holder->to_present_string();
 
-        res.push_back(v2[i]);
-    }
-
-    return res;
+    return val_holder;
 }
