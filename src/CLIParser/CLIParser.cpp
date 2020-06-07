@@ -94,6 +94,13 @@ void CLIParser::fill_maps(){
     //sisi parse mapper
     CLIParser::map_to_parser["innerjoin"] = CLIParser::parse_sisi;
 
+    //sisir parse mapper
+    CLIParser::map_to_parser["update"] = CLIParser::parse_sirir;
+
+    //sisif
+     //sv parse mapper
+     CLIParser::map_to_parser["insert"] = CLIParser::parse_sv;
+
     //noargs action mapper
     CLIParser::command_to_func_noargs["showtables"] = CLIParser::send_show;
     CLIParser::command_to_func_noargs["save"] = CLIParser::save;
@@ -120,6 +127,12 @@ void CLIParser::fill_maps(){
 
     //sisi action mapper
     CLIParser::command_to_func_sisi["innerjoin"] = CLIParser::send_innerjoin;
+
+    //sirir action mapper
+    CLIParser::command_to_func_sirir["update"] = CLIParser::send_update;
+
+    //sv action mapper
+    CLIParser::command_to_func_sv["insert"] = CLIParser::send_insert;
 }
 
 
@@ -199,6 +212,16 @@ void CLIParser::send_add_column(std::string arg1, std::string arg2, Type type){
 void CLIParser::send_innerjoin(std::string arg1, int col1, std::string arg2, int col2){
 
     database.innerjoin(arg1, col1, arg2, col2);
+}
+
+void CLIParser::send_update(std::string arg1, int col1, Record* rec1, int col2, Record* rec2){
+
+    database.update_column(arg1, col1, rec1, col2, rec2);
+}
+
+void CLIParser::send_insert(std::string arg1, std::vector<Record*> recs){
+
+    database.insert(arg1, Row(recs));
 }
 
 void CLIParser::parse_noargs(std::string action, std::vector<std::string> args){
@@ -313,6 +336,69 @@ void CLIParser::parse_sisi(std::string action, std::vector<std::string> args){
     }
 
     command_to_func_sisi[action](args[0], col1, args[2], col2);
+}
+
+void CLIParser::parse_sirir(std::string action, std::vector<std::string> args){
+
+    if(args.size() < 5){
+
+        Message::InvalidInput();
+        return;
+    }
+
+    Record* rec1;
+    Record* rec2;
+    int col1;
+    int col2;
+
+    try{
+
+        col1 = parse_int(args[1]);
+        col2 = parse_int(args[3]);
+
+        rec1 = parse_rec(args[2]);
+        rec2 = parse_rec(args[4]);
+    }
+
+    catch(int err){
+
+        Message::InvalidInput();
+        return;
+    }
+
+    command_to_func_sirir[action](args[0], col1, rec1, col2, rec2);
+
+}
+
+void CLIParser::parse_sv(std::string action, std::vector<std::string> args){
+
+    if(args.size()<2){
+
+        Message::InvalidInput();
+        return;
+
+    }
+
+    std::vector<Record*> recs;
+
+    for(int i=1; i<args.size(); i++){
+
+        Record* rec;
+        try{
+
+            rec = parse_rec(args[i]);
+            recs.push_back(rec);
+
+        }
+
+        catch(int err){
+
+            Message::InvalidInput();
+            return;
+        }
+    }
+
+    command_to_func_sv[action](args[0], recs);
 }
 
 int CLIParser::parse_int(std::string val){

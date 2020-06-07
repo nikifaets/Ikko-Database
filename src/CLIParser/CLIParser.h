@@ -65,7 +65,7 @@ class CLIParser{
     static void send_export(std::string arg1, std::string arg2);
     static void send_select(std::string arg1, int col, Record* rec);
     static void send_add_column(std::string arg1, std::string arg2, Type type);
-    static void send_update(std::string arg1, int col1, std::string arg2, int col2, Record* rec);
+    static void send_update(std::string arg1, int col1, Record* rec1, int col2, Record* rec2);
     static void send_delete(std::string arg1, int col, Record* rec);
     static void send_insert(std::string arg1, std::vector<Record*> recs);
     static void send_innerjoin(std::string arg1, int col1, std::string arg2, int col2);
