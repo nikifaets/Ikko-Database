@@ -1,3 +1,12 @@
 # Ikko-Database
 A simple database implementation for a university assignment.
-Documentation coming soon
+
+Build and run:
+```
+mkdir build
+cd build
+cmake ..
+make
+./Ikko
+```
+Tested with g++ on Arch Linux
