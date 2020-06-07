@@ -7,6 +7,7 @@
 #include "Record/RecordInt/RecordInt.h"
 #include "Record/RecordDouble/RecordDouble.h"
 #include "Tester/Tester.h"
+#include "CLIParser/CLIParser.h"
 
 using namespace std;
 
@@ -18,7 +19,11 @@ int main(){
     //tester.test_select_rows("Dogs", 1, new RecordDouble(12.23));
     //tester.test_add_empty_col("Dogs", "NewCol", Type::Int);
     //tester.test_rec_comparison();
-    tester.test_update_rec();
+    //tester.test_update_rec();
     //tester.test_delete_rows();
+    //tester.test_concat();
+    //tester.test_innerjoin();
+    CLIParser::instantiate();
+    CLIParser::parse();
 }
 

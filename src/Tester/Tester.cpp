@@ -5,6 +5,7 @@
 #include "../Record/RecordString/RecordString.h"
 #include "../Table/Row/Row.h"
 #include "../Presenter/Presenter.h"
+#include "../Utils/Utils.h"
 #include <iostream>
 
 void Tester::test_load_database(){
@@ -132,5 +133,38 @@ void Tester::test_delete_rows(){
     table.delete_rows(0, new RecordInt(15));
     std::cout << "Table after deletion " << std::endl;
     Presenter::show_table(table);
+    
+}
+
+void Tester::test_concat(){
+
+    std::vector<Record*> v1 = {new RecordString("sd\\\"dsf")};
+    std::vector <Record*> v2 = {new RecordInt("-44")};
+
+    std::vector<Record*> concatenated = Utils::concatenate(v1, v2);
+    std::cout << "concatenated vector: " << std::endl;
+
+    for(int i=0; i<concatenated.size(); i++){
+
+        std::cout << concatenated[i]->to_present_string() << " " << std::endl;
+    }
+}
+
+void Tester::test_innerjoin(){
+
+    Database database;
+
+    std::cout << "Tables in Database: " << std::endl;
+    database.show_tables();
+
+    std::cout << "Innerjoin the following two tables: " << std::endl;
+    database.print_table("TestImport");
+    database.print_table("Test1");
+
+    database.innerjoin("TestImport", 1, "Test1", 1);
+    
+    std::cout << "Inner joined. Tables in Database: " << std::endl;
+    database.show_tables();
+    database.print_table("InnerJoin_TestImport_Test1");
     
 }

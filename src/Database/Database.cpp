@@ -5,6 +5,7 @@
 #include "../Message/Message.h"
 #include "../Presenter/Presenter.h"
 #include "../Table/Parser/Parser.h"
+#include "../Utils/Utils.cpp"
 
 const std::string Database::DATABASE_LOCATION = "../src/Database/Database";
 const std::string Database::TABLES_LOCATION = "../src/Database/Tables";
@@ -19,17 +20,15 @@ Database::Database(){
     while(std::getline(database, filename)){
 
         Table table(filename);
-        if(!table.is_loaded_correctly()) continue;
-        table_filenames.push_back(filename);
-    }
-
-    for(int i=0; i<table_filenames.size(); i++){
-
-        Table table(table_filenames[i]);
         std::string name = table.get_name();
+
+        if(!table.is_loaded_correctly()) continue;
+        if(is_table_present(name)) continue;
+
+        table_filenames.push_back(filename);
         table_names.push_back(name);
-        
     }
+
 
 }
 
@@ -37,12 +36,12 @@ Table Database::load_table(std::string name){
 
     if(!is_table_present(name)){
 
-        Message::FileNotFound(name);
+        Message::TableNotFound(name);
         return Table();
     }
 
-    Table table(name_to_filename(name));
 
+    Table table(name_to_filename(name));
     return table;
 }
 
@@ -67,10 +66,6 @@ void Database::import_table(std::string filename){
         return;
     }    
 
-    std::ofstream database(DATABASE_LOCATION, std::ios::app);
-    database << std::endl << filename;
-    database.close();
-
     table_names.push_back(name);
     table_filenames.push_back(filename);
 
@@ -80,7 +75,7 @@ void Database::export_table(std::string name, std::string filename){
 
     if(!is_table_present(name)){
 
-        Message::FileNotFound(name);
+        Message::TableNotFound(name);
         return;
     }
 
@@ -102,18 +97,20 @@ std::string Database::name_to_filename(std::string name){
     std::vector<std::string> :: iterator it;
     it = std::find(table_names.begin(), table_names.end(), name);
     
-    return *it;
+    int idx = it - table_names.begin();
+
+    return table_filenames[idx];
 }
 
 void Database::describe_table(std::string name){
 
     if(!is_table_present(name)){
 
-        Message::FileNotFound(name);
+        Message::TableNotFound(name);
         return;
     }
 
-    Table table = load_table(name_to_filename(name));
+    Table table = load_table(name);
     table.print_types();
 
 }
@@ -122,7 +119,7 @@ void Database::rename_table(std::string name, std::string new_name){
 
     if(!is_table_present(name)){
 
-        Message::FileNotFound(name);
+        Message::TableNotFound(name);
         return;
     }
 
@@ -134,9 +131,9 @@ void Database::rename_table(std::string name, std::string new_name){
     table.save_table(table_filename);
 
     //change the name in the Database's array of names
-    std::vector<std::string> :: iterator it = std::find(table_filenames.begin(), table_filenames.end(), table_filename);
-    int filename_idx = it - table_filenames.begin();
-    table_filenames[filename_idx] = new_name;
+    std::vector<std::string> :: iterator it = std::find(table_names.begin(), table_names.end(), name);
+    int name_idx = it - table_names.begin();
+    table_names[name_idx] = new_name;
     
 }
 
@@ -198,9 +195,91 @@ void Database::count_cols(std::string table_name, int col_idx, Record* val){
     Table table = load_table(table_name);
     table.count(col_idx, val);
 }
-void Database::write(){
 
-    std::ofstream database(DATABASE_LOCATION);
+void Database::innerjoin(std::string table1_name, int col1, std::string table2_name, int col2){
+
+    if(! is_table_present(table1_name)){
+
+        Message::TableNotFound(table1_name);
+        return;
+    }
+
+    if(! is_table_present(table2_name)){
+
+        Message::TableNotFound(table2_name);
+        return;
+    }
+
+    Table table1 = load_table(table1_name);
+    Table table2 = load_table(table2_name);
+
+    if(! table1.is_loaded_correctly() || ! table2.is_loaded_correctly()) return;
+
+    //compare types
+    std::vector<Type> types1 = table1.get_types();
+    std::vector<Type> types2 = table2.get_types();
+
+    if(types1[col1] != types2[col2]){
+
+        Message::Custom("Data types are not the same. Cannot perform innerjoin.");
+        return;
+    }
+
+    //everything is validated, start innerjoin
+    std::string new_table_name = "InnerJoin_" + table1.get_name() + "_" + table2.get_name();
+
+    //create new names for the table columns
+    std::vector<std::string> new_col_names;
+
+    //from the first table
+    std::vector<std::string> col_names1 = table1.get_col_names();
+
+    for(int i=0; i<col_names1.size(); i++){
+
+        new_col_names.push_back(table1.get_name() + "_" + col_names1[i]);
+    }
+
+    //from the second table
+    std::vector<std::string> col_names2 = table2.get_col_names();
+
+    for(int i=0; i<col_names2.size(); i++){
+        
+        new_col_names.push_back(table2.get_name() + "_" + col_names2[i]);
+    }
+
+    std::vector<Type> new_types = Utils::concatenate(table1.get_types(), table2.get_types());
+
+
+    Table table(new_table_name, new_col_names, new_types);
+    //start searching for same values
+    std::vector<Row> rows1 = table1.get_rows();
+    std::vector<Row> rows2 = table2.get_rows();
+
+    for(int i=0; i<rows1.size(); i++){
+
+        Record* search_val = rows1[i].get_records()[col1];
+        std::vector<int> rows_found = table2.find_rows_by_value(col2, search_val);
+        for(int j=0; j<rows_found.size(); j++){
+
+            Row new_row = Utils::concatenate(rows1[i].get_records(), rows2[rows_found[j]].get_records());
+            table.add_row(new_row);
+            
+        }
+    }
+
+    std::string table_save_location = TABLES_LOCATION + "/_" + new_table_name;
+    table.save_table(table_save_location);
+    import_table(table_save_location);
+    
+    Message::Custom("Innerjoin was succesful. This is the new table: ");
+    Presenter::show_table(table);
+    
+}
+
+
+void Database::write(std::string path){
+
+    std::ofstream database(path);
 
     if(database.is_open()){
 

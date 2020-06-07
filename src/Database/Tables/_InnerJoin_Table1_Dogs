@@ -1,0 +1,12 @@
+InnerJoin_Table1_Dogs
+Table1_Name1	Table1_Name2	Table1_Name3	Table1_StringName	Table1_Nulls	Dogs_Int	Dogs_Double	Dogs_NewCol	Dogs_NewCol	Dogs_Roses
+0	0	1	2	0	0	1	0	0	0
+15	50	14.220000	"hehe\\he"	Null	123	12.230000	Null	Null	Null
+15	50	14.220000	"hehe\\he"	Null	32	11.230000	Null	Null	Null
+15	50	14.220000	"hehe\\he"	Null	1000	12.230000	Null	Null	Null
+15	30	14.220000	"\"\"\""	Null	123	12.230000	Null	Null	Null
+15	30	14.220000	"\"\"\""	Null	32	11.230000	Null	Null	Null
+15	30	14.220000	"\"\"\""	Null	1000	12.230000	Null	Null	Null
+15	20	14.220000	"lolo"	Null	123	12.230000	Null	Null	Null
+15	20	14.220000	"lolo"	Null	32	11.230000	Null	Null	Null
+15	20	14.220000	"lolo"	Null	1000	12.230000	Null	Null	Null

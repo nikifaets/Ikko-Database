@@ -1,0 +1,4 @@
+InnerJoin_TestImport_Test1
+TestImport_Name1	TestImport_Name2	TestImport_Name3	Test1_Name1	Test1_Name2	Test1_Name3	Test1_StringName
+0	0	1	0	0	1	2
+15	177	15.150000	15	177	14.220000	"abracadabra"

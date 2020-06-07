@@ -47,3 +47,13 @@ void Message::Custom(std::string msg){
 
     std::cout << msg << std::endl;
 }
+
+void Message::TableNotFound(std::string name){
+
+    std::cout << "Cannot find table with name " + name << std::endl;
+}
+
+void Message::InvalidInput(){
+
+    std::cout << "Input is invalid. " << std::endl;
+}

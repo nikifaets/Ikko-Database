@@ -1,6 +1,6 @@
 Dogs
-Int	Double	NewCol	NewCol
-0	1	0	0
-123	12.230000	Null	Null
-32	11.230000	Null	Null
-1000	12.230000	Null	Null
+Int	Double	NewCol	NewCol	Roses
+0	1	0	0	0
+123	12.230000	Null	Null	Null
+32	11.230000	Null	Null	Null
+1000	12.230000	Null	Null	Null

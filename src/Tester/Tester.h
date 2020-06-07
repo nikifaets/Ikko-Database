@@ -16,4 +16,6 @@ class Tester{
     void test_rec_comparison();
     void test_update_rec();
     void test_delete_rows();
+    void test_concat();
+    void test_innerjoin();
 };

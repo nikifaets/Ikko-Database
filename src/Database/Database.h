@@ -14,13 +14,15 @@ class Database{
 
     bool is_table_present(std::string name);
     std::string name_to_filename(std::string name);
-    void write();
+    Table create_table(std::string name, std::vector<std::string> names, std::vector<Type> types);
     
     public:
 
     Table load_table(std::string name);
 
     Database();
+    
+    void write(std::string path = DATABASE_LOCATION);
     void show_tables();
     void import_table(std::string filename);
     void export_table(std::string name, std::string filename);
@@ -33,4 +35,6 @@ class Database{
     void insert(std::string table_name, Row row);
     void delete_rows(std::string table_name, int search_col, Record* val);
     void count_cols(std::string table_name, int col_idx, Record* val);
+    void innerjoin(std::string table1, int col1, std::string table2, int col2);
+
 };

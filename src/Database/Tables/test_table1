@@ -1,7 +1,6 @@
-Test1
-Name1	Name2	Name3
-0	0	1
-15	177	14.220000
-15	177	14.220000
-15	177	14.220000
-15	177	14.220000
+Table1
+Name1	Name2	Name3	StringName	Nulls
+0	0	1	2	0
+15	50	14.220000	"hehe\\he"	Null
+15	30	14.220000	"\"\"\""	Null
+15	20	14.220000	"lolo"	Null

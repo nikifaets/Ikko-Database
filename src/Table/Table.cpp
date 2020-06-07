@@ -20,6 +20,15 @@ std::string Table::get_name(){
     return name;
 }
 
+std::vector<std::string> Table::get_col_names(){
+
+    return col_names;
+}
+
+Table::Table(std::string name, std::vector<std::string> names, std::vector<Type> types):
+
+    name(name), col_names(names), col_types(types){}
+
 void Table::set_name(std::string new_name){
 
     name = new_name;
@@ -153,10 +162,8 @@ void Table::add_row(Row row){
 
 void Table::delete_rows(int col_idx, Record* val){
 
-    
     std::vector<int> indices = find_rows_by_value(col_idx, val);
     if(! indices.size()) return;
-
     for(int i=0; i<indices.size(); i++){
 
         // subtract i because with each erasion, the elements after indices[i] shift one to the left
@@ -220,7 +227,6 @@ bool Table::validate_row(Row row){
 
     if(recs.size() == 0){
 
-        std::cout << "in validatre row recs size 0 " << std::endl;
         return false;
     }
 
@@ -246,6 +252,11 @@ bool Table::validate_row(Row row){
 std::vector<Row> Table::get_rows(){
 
     return rows;
+}
+
+std::vector<Type> Table::get_types(){
+
+    return col_types;
 }
 
 void Table::print_types(){

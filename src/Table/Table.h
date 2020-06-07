@@ -18,8 +18,11 @@ class Table{
     public:
 
     Table(std::string filename);
+    Table(std::string name, std::vector<std::string> names, std::vector<Type> types);
     Table();
     std::vector<Row> get_rows();
+    std::vector<Type> get_types();
+    std::vector<std::string> get_col_names();
     void read_table(std::string filename);
     void save_table(std::string filename);
     bool is_loaded_correctly();

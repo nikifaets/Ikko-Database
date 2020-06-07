@@ -1,5 +1,7 @@
 #include "RecordString.h"
 #include "iostream"
+#include <sstream>
+
 RecordString::RecordString(std::string val) : value_raw(val){
 
     parse(val);
@@ -11,8 +13,12 @@ std::string RecordString::get_value() const{
     return value;
 }
 
-void RecordString::parse(std::string val){
+void RecordString::parse(std::string val_raw){
 
+    std::stringstream ss(val_raw);
+    std::string val;
+    ss >> val;
+/*
     if(val[0] == '\"'){
          
          val.erase(val.begin());
@@ -27,7 +33,7 @@ void RecordString::parse(std::string val){
         }
 
     }
-
+*/
     value = val;
 
 }
