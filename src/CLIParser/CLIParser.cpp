@@ -314,6 +314,7 @@ void CLIParser::parse_sisi(std::string action, std::vector<std::string> args){
 
     command_to_func_sisi[action](args[0], col1, args[2], col2);
 }
+
 int CLIParser::parse_int(std::string val){
 
     std::stringstream ss(val);

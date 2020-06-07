@@ -20,6 +20,9 @@ class CLIParser{
     //s: string
     //i: integer
     //r: record
+    //f: function
+    //v: vector
+    //t: type
     static void parse_noargs(std::string action, std::vector<std::string> args);
     static void parse_s(std::string action, std::vector<std::string> args);
     static void parse_sir(std::string action, std::vector<std::string> args);
